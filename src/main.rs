@@ -1,8 +1,14 @@
+#![feature(custom_attribute)]
+#![feature(plugin)]
+#![plugin(rocket_codegen)]
+
 #[macro_use]
 extern crate serde_derive;
+
+#[macro_use]
+extern crate rocket;
 extern crate serde;
 extern crate serde_json;
-extern crate rocket;
 
 mod cache;
 use cache::Cache;
@@ -19,5 +25,11 @@ fn main() {
         }
         _ => {}
     }
-    cache.add(123, "test").expect("item already in cache");
+
+    rocket::ignite().mount("/", routes![index]).launch();
+}
+
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
 }
