@@ -40,7 +40,10 @@ impl Cache {
 
     pub fn save(&mut self) -> io::Result<()> {
         if self.fd == "" {
-            return Err(Error::new(ErrorKind::NotFound, "oh no!"));
+            return Err(Error::new(
+                ErrorKind::NotFound,
+                "No file saved, cache broken?",
+            ));
         }
         let mut fh = OpenOptions::new().write(true).open(&self.fd)?;
         let serialized = serde_json::to_vec(&self.inner)?;
