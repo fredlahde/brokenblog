@@ -58,7 +58,7 @@ impl Cache {
                 "item already in cache",
             ));
         }
-        self.inner.push(InnerCache::new(1234, "foo"));
+        self.inner.push(InnerCache::new(id, content));
 
         Ok(())
     }
