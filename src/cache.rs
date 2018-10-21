@@ -80,8 +80,6 @@ impl InnerCache {
 }
 
 mod test {
-    use super::*;
-
     #[test]
     fn test_basic() {
         let mut c = Cache::new();
