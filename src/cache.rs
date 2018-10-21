@@ -80,6 +80,8 @@ impl InnerCache {
 }
 
 mod test {
+    use super::Cache;
+
     #[test]
     fn test_basic() {
         let mut c = Cache::new();
@@ -89,6 +91,6 @@ mod test {
             }
             _ => {}
         }
-        c.add(123, "fred");
+        c.add(123, "fred").expect("could not add to empty cache");
     }
 }
