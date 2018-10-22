@@ -2,20 +2,20 @@ use serde_json;
 use std::fs::{File, OpenOptions};
 use std::io::{self, prelude::*, Error, ErrorKind};
 use std::path::Path;
+use post::Post;
 
 pub struct Cache {
-    inner: Vec<InnerCache>,
+    inner: Vec<Post>,
     fd: String,
 }
 
-#[derive(Serialize, Deserialize)]
-struct InnerCache {
-    id: i64,
-    content: String,
+pub struct InnerCache {
+    pub id: i64,
+    pub content: String,
 }
 
 impl Cache {
-    pub fn new() -> Cache {
+    pub fn new() -> Cache{
         Cache {
             inner: Vec::new(),
             fd: String::new(),
@@ -33,7 +33,7 @@ impl Cache {
             return Ok(());
         }
         fh.read_to_string(&mut contents)?;
-        let parsed: Vec<InnerCache> = serde_json::from_str(&contents)?;
+        let parsed: Vec<Post> = serde_json::from_str(&contents)?;
         self.inner = parsed;
         Ok(())
     }
@@ -58,9 +58,13 @@ impl Cache {
                 "item already in cache",
             ));
         }
-        self.inner.push(InnerCache::new(id, content));
+        self.inner.push(Post::new());
 
         Ok(())
+    }
+
+    pub fn get_cached_content(&self) -> Vec<Post> {
+        self.inner.clone()
     }
 }
 
@@ -79,6 +83,7 @@ impl InnerCache {
     }
 }
 
+#[cfg(test)]
 mod test {
     use super::Cache;
 
